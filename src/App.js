@@ -10,14 +10,19 @@ class App extends Component {
 
     // construct the position vector here, because if we use 'new' within render,
     // React will think that things have changed when they have not.
-    this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
     this.state = {
+      cameraPosition: new THREE.Vector3(0, 10, 4),
+      cameraLookAt: new THREE.Vector3(0, 10, 0),
       coinRotation: new THREE.Euler(),
+      coinPosition: new THREE.Vector3(0, 10, 0),
     };
 
     this.scenePosition = new THREE.Vector3(0, 0, 0);
-    this.directionalLightPosition = new THREE.Vector3(0, 5, 5);
+    this.directionalLightPosition = new THREE.Vector3(20, 20, 20);
+
+    this.groundQuaternion = new THREE.Quaternion()
+      .setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
 
     this._onAnimate = () => {
       // we will get this callback every frame
@@ -30,6 +35,11 @@ class App extends Component {
           this.state.coinRotation.x + 0.01,
           this.state.coinRotation.y + 0.01,
           0
+        ),
+        coinPosition: new THREE.Vector3(
+          this.state.coinPosition.x,
+          this.state.coinPosition.y - 0.015,
+          this.state.coinPosition.z
         ),
       });
     };
@@ -49,6 +59,10 @@ class App extends Component {
           antialias
           pixelRatio={window.devicePixelRatio}
 
+          shadowMapEnabled
+          gammaInput
+          gammaOutput
+
           onAnimate={this._onAnimate}
         >
           <scene>
@@ -57,10 +71,10 @@ class App extends Component {
               fov={75}
               aspect={width / height}
               near={0.1}
-              far={1000}
+              far={100}
 
-              position={this.cameraPosition}
-              lookAt={this.scenePosition}
+              position={this.state.cameraPosition}
+              lookAt={this.state.coinPosition}
             />
             <ambientLight
               color={0x404040}
@@ -69,8 +83,39 @@ class App extends Component {
               color={0xffffff}
               position={this.directionalLightPosition}
               lookAt={this.scenePosition}
+
+              castShadow
+              shadowMapWidth={1024}
+              shadowMapHeight={1024}
+
+              shadowCameraLeft={-20}
+              shadowCameraRight={20}
+              shadowCameraTop={20}
+              shadowCameraBottom={-20}
+
+              shadowCameraFar={3 * 20}
+              shadowCameraNear={20}
             />
-            <Coin rotation={this.state.coinRotation} />
+            <mesh
+              castShadow
+              receiveShadow
+
+              quaternion={this.groundQuaternion}
+            >
+              <planeBufferGeometry
+                width={200}
+                height={100}
+                widthSegments={1}
+                heightSegments={1}
+              />
+              <meshLambertMaterial
+                color={0xFEFEFE}
+              />
+            </mesh>
+            <Coin
+              position={this.state.coinPosition}
+              rotation={this.state.coinRotation}
+            />
           </scene>
         </React3>
       </div>

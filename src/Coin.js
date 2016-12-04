@@ -7,6 +7,7 @@ import React3 from 'react-three-renderer';
 class Coin extends Component {
   static propTypes = {
       rotation: React.PropTypes.object,
+      position: React.PropTypes.object,
   }
 
   constructor(props, context) {
@@ -79,7 +80,9 @@ class Coin extends Component {
 
   render() {
     return (
-      <group>
+      <group
+        position={this.props.position}
+      >
         <resources>
           <meshPhongMaterial
             resourceId="coinSideMaterial"
@@ -145,6 +148,7 @@ class Coin extends Component {
 
         <mesh
           rotation={this.props.rotation}
+          castShadow
         >
           <cylinderGeometry
             ref={geo => this.geometries.side = geo}
@@ -160,6 +164,7 @@ class Coin extends Component {
         </mesh>
         <mesh
           rotation={this.props.rotation}
+          castShadow
         >
           <geometry
             ref={geo => this.geometries.tails = geo}
@@ -173,6 +178,7 @@ class Coin extends Component {
         </mesh>
         <mesh
           rotation={this.props.rotation}
+          castShadow
         >
           <geometry
             ref={geo => this.geometries.heads = geo}
