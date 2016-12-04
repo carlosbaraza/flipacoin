@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import styles from './Coin.scss';
 import THREE from 'three';
 window.THREE = THREE;
-import React3 from 'react-three-renderer';
 
 class Coin extends Component {
   static propTypes = {
