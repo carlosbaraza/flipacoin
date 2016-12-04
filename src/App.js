@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Coin from './Coin';
 import styles from './App.scss';
 import THREE from 'three';
+import CANNON from 'cannon/src/Cannon';
 import React3 from 'react-three-renderer';
 
 class App extends Component {
@@ -14,8 +15,9 @@ class App extends Component {
     this.state = {
       cameraPosition: new THREE.Vector3(0, 10, 4),
       cameraLookAt: new THREE.Vector3(0, 10, 0),
-      coinRotation: new THREE.Euler(),
-      coinPosition: new THREE.Vector3(0, 10, 0),
+      // coinRotation: new THREE.Euler(),
+      // coinPosition: new THREE.Vector3(0, 10, 0),
+      meshStates: [{}],
     };
 
     this.scenePosition = new THREE.Vector3(0, 0, 0);
@@ -24,23 +26,79 @@ class App extends Component {
     this.groundQuaternion = new THREE.Quaternion()
       .setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
 
-    this._onAnimate = () => {
-      // we will get this callback every frame
+    const world = new CANNON.World();
 
-      // pretend coinRotation is immutable.
-      // this helps with updates and pure rendering.
-      // React will be sure that the rotation has now updated.
+    const bodies = [];
+
+    const initCannon = () => {
+      world.quatNormalizeSkip = 0;
+      world.quatNormalizeFast = false;
+
+      world.gravity.set(0, -10, 0);
+      world.broadphase = new CANNON.NaiveBroadphase();
+
+      const mass = 5;
+
+      const coinShape = new CANNON.Cylinder(
+        1.0,
+        1.0,
+        0.2,
+        40
+      );
+      const coinShapeQuaternion = new CANNON.Quaternion();
+      coinShapeQuaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI / 2);
+      const coinShapeTranslation = new CANNON.Vec3(0, 0, 0);
+      coinShape.transformAllPoints(coinShapeTranslation, coinShapeQuaternion);
+      const coinBody = new CANNON.Body({
+        mass,
+      });
+      coinBody.addShape(coinShape);
+
+      coinBody.position.set(0, 10, 0);
+      coinBody.angularVelocity.set(-20 * Math.random(), 0, 0);
+      coinBody.velocity.set(0, 10, 0);
+      world.addBody(coinBody);
+      bodies.push(coinBody);
+
+      const groundShape = new CANNON.Plane();
+      const groundBody = new CANNON.Body({ mass: 0 });
+
+      groundBody.addShape(groundShape);
+      groundBody.quaternion
+        .setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+
+      world.addBody(groundBody);
+
+      const shape = new CANNON.Sphere(0.1);
+      const jointBody = new CANNON.Body({ mass: 0 });
+      jointBody.addShape(shape);
+      jointBody.collisionFilterGroup = 0;
+      jointBody.collisionFilterMask = 0;
+
+      world.addBody(jointBody);
+
+      this.jointBody = jointBody;
+    };
+
+    initCannon();
+
+    const timeStep = 1 / 60;
+    const updatePhysics = () => {
+      // Step the physics world
+      world.step(timeStep);
+    };
+
+    const _getMeshStates = () => bodies
+      .map(({ position, quaternion }, bodyIndex) => ({
+        position: new THREE.Vector3().copy(position),
+        quaternion: new THREE.Quaternion().copy(quaternion),
+      }));
+
+    this._onAnimate = () => {
+      updatePhysics();
+
       this.setState({
-        coinRotation: new THREE.Euler(
-          this.state.coinRotation.x + 0.01,
-          this.state.coinRotation.y + 0.01,
-          0
-        ),
-        coinPosition: new THREE.Vector3(
-          this.state.coinPosition.x,
-          this.state.coinPosition.y - 0.015,
-          this.state.coinPosition.z
-        ),
+        meshStates: _getMeshStates(),
       });
     };
   }
@@ -74,7 +132,7 @@ class App extends Component {
               far={100}
 
               position={this.state.cameraPosition}
-              lookAt={this.state.coinPosition}
+              lookAt={this.state.meshStates[0].position}
             />
             <ambientLight
               color={0x404040}
@@ -113,8 +171,8 @@ class App extends Component {
               />
             </mesh>
             <Coin
-              position={this.state.coinPosition}
-              rotation={this.state.coinRotation}
+              position={this.state.meshStates[0].position}
+              quaternion={this.state.meshStates[0].quaternion}
             />
           </scene>
         </React3>

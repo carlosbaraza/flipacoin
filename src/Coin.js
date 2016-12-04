@@ -6,6 +6,7 @@ class Coin extends Component {
   static propTypes = {
       rotation: React.PropTypes.object,
       position: React.PropTypes.object,
+      quaternion: React.PropTypes.object,
   }
 
   constructor(props, context) {
@@ -80,6 +81,7 @@ class Coin extends Component {
     return (
       <group
         position={this.props.position}
+        quaternion={this.props.quaternion}
       >
         <resources>
           <meshPhongMaterial
