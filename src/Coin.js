@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import THREE from 'three';
-window.THREE = THREE;
+import CANNON from 'cannon/src/Cannon';
 
 class Coin extends Component {
   static propTypes = {
       rotation: React.PropTypes.object,
       position: React.PropTypes.object,
       quaternion: React.PropTypes.object,
+      world: React.PropTypes.object,
+      addToWorld: React.PropTypes.func,
   }
 
   constructor(props, context) {
@@ -19,7 +21,54 @@ class Coin extends Component {
     this.radialSegments = 40;
     this.sideTextureRepeat = new THREE.Vector2(16, 1);
 
+    const { position, quaternion } = this.constructPhysicBody();
+
+    this.state = {
+      position: new THREE.Vector3().copy(position),
+      quaternion: new THREE.Quaternion().copy(quaternion),
+    }
+
     this.constructCaps();
+  }
+
+  constructPhysicBody() {
+    // Create cylinder shape
+    const coinShape = new CANNON.Cylinder(
+      this.radius,
+      this.radius,
+      this.height,
+      this.radialSegments
+    );
+
+    // Rotate all points of cylinder to match the THREE cylinder
+    const coinShapeQuaternion = new CANNON.Quaternion();
+    coinShapeQuaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI / 2);
+    const coinShapeTranslation = new CANNON.Vec3(0, 0, 0);
+    coinShape.transformAllPoints(coinShapeTranslation, coinShapeQuaternion);
+
+    // Give mass to shape
+    this.mass = 5;
+    this.body = new CANNON.Body({
+      mass: this.mass,
+    });
+    this.body.addShape(coinShape);
+
+    // Add body to world
+    this.props.world.addBody(this.body);
+
+    this.body.position.set(0, 10, 0);
+    this.body.angularVelocity.set(-20 * Math.random(), 0, 0);
+    this.body.velocity.set(0, 10, 0);
+
+    return this.body;
+  }
+
+  updatePhysics() {
+    const { position, quaternion } = this.body;
+    this.setState({
+      position: new THREE.Vector3().copy(position),
+      quaternion: new THREE.Quaternion().copy(quaternion),
+    });
   }
 
   constructCaps() {
@@ -80,8 +129,8 @@ class Coin extends Component {
   render() {
     return (
       <group
-        position={this.props.position}
-        quaternion={this.props.quaternion}
+        position={this.state.position}
+        quaternion={this.state.quaternion}
       >
         <resources>
           <meshPhongMaterial
