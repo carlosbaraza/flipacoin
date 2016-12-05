@@ -21,8 +21,10 @@ class Coin extends Component {
     this.radialSegments = 40;
     this.sideTextureRepeat = new THREE.Vector2(16, 1);
 
-    const { position, quaternion } = this.constructPhysicBody();
+    this.constructPhysicBody();
+    this.setInitialState();
 
+    const { position, quaternion } = this.body;
     this.state = {
       position: new THREE.Vector3().copy(position),
       quaternion: new THREE.Quaternion().copy(quaternion),
@@ -55,10 +57,6 @@ class Coin extends Component {
 
     // Add body to world
     this.props.world.addBody(this.body);
-
-    this.body.position.set(0, 10, 0);
-    this.body.angularVelocity.set(-20 * Math.random(), 0, 0);
-    this.body.velocity.set(0, 10, 0);
 
     return this.body;
   }
@@ -119,6 +117,17 @@ class Coin extends Component {
       ]);
       this.caps.heads.faces.push(new THREE.Face3(i * 3, i * 3 + 2, i * 3 + 1));
     }
+  }
+
+  setInitialState() {
+    this.body.position.set(0, 10, 0);
+    this.body.angularVelocity.set(-20 * Math.random(), 0, 0);
+    this.body.velocity.set(0, 10, 0);
+  }
+
+  reset() {
+    this.setInitialState();
+    this.updatePhysics();
   }
 
   componentDidMount() {

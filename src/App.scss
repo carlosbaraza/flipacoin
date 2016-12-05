@@ -2,6 +2,30 @@
   text-align: center;
 }
 
+.ui {
+  position: absolute;
+  padding: 10px;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button {
+  width: 100%;
+  display: block;
+  background: #222;
+  border-style: none;
+  height: 80px;
+  line-height: 80px;
+  color: #FEFEFE;
+  font-size: 20px;
+  text-transform: uppercase;
+
+  &:active {
+    background: #444;
+  }
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

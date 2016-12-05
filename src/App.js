@@ -74,6 +74,10 @@ class App extends Component {
     this.meshRefs = {};
   }
 
+  flipCoin() {
+    this.meshRefs['coin'].reset();
+  }
+
   render() {
     const width = window.innerWidth; // canvas width
     const height = window.innerHeight; // canvas height
@@ -83,6 +87,11 @@ class App extends Component {
 
     return (
       <div className={styles.app}>
+        <div className={styles.ui}>
+          <button className={styles.button} onClick={this.flipCoin.bind(this)}>
+            Flip the coin
+          </button>
+        </div>
         <React3
           mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
           width={width}
