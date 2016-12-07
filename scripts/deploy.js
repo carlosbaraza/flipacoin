@@ -49,7 +49,7 @@ function pushImage(tag) {
 }
 
 function deployService(tag) {
-  console.log('\Figuring out if create or redeploy to Docker Cloud');
+  console.log('\nFiguring out if create or redeploy to Docker Cloud');
   var cmd = 'docker-cloud service ps';
   console.log('Running "' + cmd + '"...');
   exec(cmd, function(error, stdout, stderr) {
@@ -94,7 +94,7 @@ function redeployService(tag) {
   console.log('Running "' + cmd + '"...');
   exec(cmd, function(error, stdout, stderr) {
     if (error) throw error;
-    startService();
+    successfullyDeployed();
   });
 }
 
