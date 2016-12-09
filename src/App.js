@@ -90,7 +90,9 @@ class App extends Component {
       <div className={styles.app}>
         <div className={styles.ui}>
           <button className={styles.button} onClick={this.flipCoin.bind(this)}>
-            Flip the coin
+            Flip
+            <span>the</span>
+            coin
           </button>
         </div>
         <React3
