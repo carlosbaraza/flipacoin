@@ -151,7 +151,7 @@ class App extends Component {
                 heightSegments={1}
               />
               <meshLambertMaterial
-                color={0xFEFEFE}
+                color={0xffde25}
               />
             </mesh>
             <Coin
