@@ -22,5 +22,5 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "start_url": "/?utm_source=web_app_manifest",
-  "theme_color": "#199FFF"
+  "theme_color": "#e8d958"
 }
