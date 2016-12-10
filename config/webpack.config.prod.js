@@ -239,6 +239,7 @@ module.exports = {
         '/textures/coin-side-bump-hd.jpg',
         '/textures/coin-tails-hd.jpg',
         '/textures/coin-heads-hd.jpg',
+        '/manifest.webmanifest',
       ],
       ServiceWorker: {
         cacheName: 'flipacoin',

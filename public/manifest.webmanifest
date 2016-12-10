@@ -1,0 +1,26 @@
+{
+  "name": "Flip a coin",
+  "short_name": "Flip coin",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#e8d958",
+  "description": "Heads or tails game. Flip one coin and get the result.",
+  "icons": [{
+    "src": "favicon-32.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  }, {
+    "src": "favicon-128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }, {
+    "src": "favicon-512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "lang": "en-US",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "start_url": "/?utm_source=web_app_manifest",
+  "theme_color": "#199FFF"
+}
