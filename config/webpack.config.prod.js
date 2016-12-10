@@ -234,6 +234,7 @@ module.exports = {
       fileName: 'asset-manifest.json'
     }),
     new OfflinePlugin({
+      responseStrategy: 'network-first',
       externals: [
         '/textures/coin-side-hd.jpg',
         '/textures/coin-side-bump-hd.jpg',
