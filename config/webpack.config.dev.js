@@ -8,7 +8,6 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
-var OfflinePlugin = require('offline-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -193,18 +192,6 @@ module.exports = {
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
-    new OfflinePlugin({
-      externals: [
-        '/textures/coin-side-hd.jpg',
-        '/textures/coin-side-bump-hd.jpg',
-        '/textures/coin-tails-hd.jpg',
-        '/textures/coin-heads-hd.jpg',
-        '/manifest.webmanifest',
-      ],
-      ServiceWorker: {
-        cacheName: 'flipacoin',
-      }
-    }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
