@@ -4,6 +4,7 @@ import styles from './App.scss';
 import THREE from 'three';
 import CANNON from 'cannon/src/Cannon';
 import React3 from 'react-three-renderer';
+import { spring, Motion, TransitionMotion } from 'react-motion';
 
 class App extends Component {
   constructor(props, context) {
@@ -61,10 +62,9 @@ class App extends Component {
       }
       else if (this.meshRefs['coin'].result()) {
         const result = this.meshRefs['coin'].result();
-        this.state.results.push(result);
+
         this.setState({
           result: result,
-          results: this.state.results
         });
       }
       else {
@@ -92,8 +92,11 @@ class App extends Component {
   flipCoin() {
     if (window.analytics) window.analytics.track('Clicked Flip Coin');
     this.meshRefs['coin'].reset();
+
+    this.state.results.push(this.state.result);
     this.setState({
       result: null,
+      results: this.state.results
     });
   }
 
@@ -108,12 +111,36 @@ class App extends Component {
       <div className={styles.app}>
         <div className={styles.ui}>
           <ol className={styles.results}>
-            {(() => {
-              return this.state.results.map((result, i) => (
-                <li key={i}>{result}</li>
-              ));
-            })()}
+            <TransitionMotion
+              willEnter={() => {
+                return ({
+                  bottom: 0,
+                  fontSize: 50,
+                  right: 200,
+                });
+              }}
+              styles={this.state.results.map((result, i) => ({
+                key: `${result}${i}`,
+                style: {
+                  bottom: spring(40 * ((this.state.results.length - 1) - i)),
+                  fontSize: spring(16),
+                  right: spring(7),
+                },
+                data: result,
+              }))}>
+              {interpolatedStyles =>
+                <div>
+                  {interpolatedStyles.map(config => {
+                    return <li key={config.key} style={{...config.style}}>{config.data}</li>;
+                  })}
+                </div>
+              }
+            </TransitionMotion>
+            {this.state.result ?
+              <li className={styles.result}>{this.state.result}</li> :
+              null}
           </ol>
+
           <button className={styles.button} onClick={this.flipCoin.bind(this)}>
             Flip
             <span>the</span>

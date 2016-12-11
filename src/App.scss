@@ -1,6 +1,10 @@
 .app {
   text-align: center;
   background-color: #199FFF;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .ui {
@@ -8,16 +12,31 @@
   padding: 10px;
   bottom: 0;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .results {
   float: right;
   color: white;
+  position: relative;
+  width: 100%;
+  /* list-style: none; */
+  padding: 0;
 
   li {
-    width: 9em;
+    position: absolute;
+    bottom: 0;
+    right: 7px;
+    width: 4em;
+    text-align: right;
     text-transform: capitalize;
+  }
+
+  .result {
+    font-size: 50px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    text-align: center;
   }
 }
 
