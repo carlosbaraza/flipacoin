@@ -18,6 +18,8 @@ class App extends Component {
       // coinRotation: new THREE.Euler(),
       // coinPosition: new THREE.Vector3(0, 10, 0),
       meshStates: {},
+      result: null,
+      results: [],
     };
 
     this.scenePosition = new THREE.Vector3(0, 0, 0);
@@ -54,21 +56,34 @@ class App extends Component {
     };
 
     this._onAnimate = () => {
-      updatePhysics();
+      if (this.state.result) {
+        return;
+      }
+      else if (this.meshRefs['coin'].result()) {
+        const result = this.meshRefs['coin'].result();
+        this.state.results.push(result);
+        this.setState({
+          result: result,
+          results: this.state.results
+        });
+      }
+      else {
+        updatePhysics();
 
-      this.setState({
-        meshStates: Object.keys(this.meshRefs)
-          .reduce((meshStates, key) => {
-            const component = this.meshRefs[key];
-            const { position, quaternion } = component.body;
-            meshStates[key] = {
-              position: new THREE.Vector3().copy(position),
-              quaternion: new THREE.Quaternion().copy(quaternion),
-            };
-            component.updatePhysics();
-            return meshStates;
-          }, {}),
-      });
+        this.setState({
+          meshStates: Object.keys(this.meshRefs)
+            .reduce((meshStates, key) => {
+              const component = this.meshRefs[key];
+              const { position, quaternion } = component.body;
+              meshStates[key] = {
+                position: new THREE.Vector3().copy(position),
+                quaternion: new THREE.Quaternion().copy(quaternion),
+              };
+              component.updatePhysics();
+              return meshStates;
+            }, {}),
+        });
+      }
     };
 
     this.meshRefs = {};
@@ -77,6 +92,9 @@ class App extends Component {
   flipCoin() {
     if (window.analytics) window.analytics.track('Clicked Flip Coin');
     this.meshRefs['coin'].reset();
+    this.setState({
+      result: null,
+    });
   }
 
   render() {
@@ -89,6 +107,13 @@ class App extends Component {
     return (
       <div className={styles.app}>
         <div className={styles.ui}>
+          <ol className={styles.results}>
+            {(() => {
+              return this.state.results.map((result, i) => (
+                <li key={i}>{result}</li>
+              ));
+            })()}
+          </ol>
           <button className={styles.button} onClick={this.flipCoin.bind(this)}>
             Flip
             <span>the</span>

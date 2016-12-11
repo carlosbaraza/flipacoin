@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import THREE from 'three';
 import CANNON from 'cannon/src/Cannon';
+import _ from 'lodash';
 
 class Coin extends Component {
   static propTypes = {
@@ -13,6 +14,8 @@ class Coin extends Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this._result = null;
 
     this.geometries = {};
 
@@ -67,7 +70,29 @@ class Coin extends Component {
       position: new THREE.Vector3().copy(position),
       quaternion: new THREE.Quaternion().copy(quaternion),
     });
+    if (!this._result) this.updateResult();
   }
+
+  updateResult = _.throttle(() => {
+    // Return if the coin is not close to the ground
+    if (this.groupRef.position.y > this.radius) return null;
+
+    const prevRotation = this.prevRotation || {};
+    const currentRotation = this.groupRef.rotation;
+    const error = 0.15;
+
+    const abs = (rot) => Math.abs(Math.abs(rot.z) - Math.abs(rot.x));
+    const isStable = abs(currentRotation) - abs(prevRotation);
+
+    if (isStable) {
+      if (abs(currentRotation) < error)
+        this._result = 'heads';
+      else if (Math.abs(Math.PI - abs(currentRotation)) < error)
+        this._result = 'tails';
+    }
+
+    this.prevRotation = _.clone(currentRotation);
+  }, 1000);
 
   constructCaps() {
     this.caps = {
@@ -120,6 +145,7 @@ class Coin extends Component {
   }
 
   setInitialState() {
+    this._result = null;
     this.body.position.set(0, 10, 0);
     this.body.angularVelocity.set(-20 * Math.random(), 0, 0);
     this.body.velocity.set(0, 10, 0);
@@ -128,6 +154,11 @@ class Coin extends Component {
   reset() {
     this.setInitialState();
     this.updatePhysics();
+  }
+
+  result() {
+    if (this._result) return this._result;
+    else return null;
   }
 
   componentDidMount() {
@@ -140,6 +171,7 @@ class Coin extends Component {
       <group
         position={this.state.position}
         quaternion={this.state.quaternion}
+        ref={group => this.groupRef = group}
       >
         <resources>
           <meshPhongMaterial
