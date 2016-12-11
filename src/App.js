@@ -92,9 +92,9 @@ class App extends Component {
   flipCoin() {
     if (window.analytics) window.analytics.track('Clicked Flip Coin');
     this.meshRefs['coin'].reset();
-    this.setState({
+    setTimeout(() => this.setState({
       result: null,
-    });
+    }), 0);
   }
 
   render() {
@@ -127,6 +127,8 @@ class App extends Component {
           alpha
           antialias
           pixelRatio={window.devicePixelRatio}
+          forceManualRender={this.state.result ? true : false}
+          onManualRenderTriggerCreated={() => { /* just to stop the warning */ }}
 
           shadowMapEnabled
           gammaInput
