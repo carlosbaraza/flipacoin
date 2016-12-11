@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Coin from './Coin';
-import styles from './App.scss';
+import styles from './App.mod.scss';
 import THREE from 'three';
 import CANNON from 'cannon/src/Cannon';
 import React3 from 'react-three-renderer';

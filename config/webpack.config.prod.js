@@ -119,7 +119,17 @@ module.exports = {
       // use the "style" loader inside the async code so CSS from them won't be
       // in the main CSS file.
       {
-        test: /\.(css|scss)$/,
+        test: /^((?!\.mod).)*\.(css|scss)$/,
+        loaders: [
+          'style?sourceMap',
+          'css',
+          'postcss',
+          'resolve-url',
+          'sass?sourceMap'
+        ]
+      },
+      {
+        test: /\.mod\.(css|scss)$/,
         // "?-autoprefixer" disables autoprefixer in css-loader itself:
         // https://github.com/webpack/css-loader/issues/281
         // We already have it thanks to postcss. We only pass this flag in

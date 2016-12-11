@@ -109,13 +109,23 @@ module.exports = {
           })
         }
       },
+      {
+        test: /^((?!\.mod).)*\.(css|scss)$/,
+        loaders: [
+          'style?sourceMap',
+          'css',
+          'postcss',
+          'resolve-url',
+          'sass?sourceMap'
+        ]
+      },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
       // "style" loader turns CSS into JS modules that inject <style> tags.
       // In production, we use a plugin to extract that CSS to a file, but
       // in development "style" loader enables hot editing of CSS.
       {
-        test: /\.(css|scss)$/,
+        test: /\.mod\.(css|scss)$/,
         loaders: [
           'style?sourceMap',
           'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
