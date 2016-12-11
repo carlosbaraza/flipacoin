@@ -92,9 +92,9 @@ class App extends Component {
   flipCoin() {
     if (window.analytics) window.analytics.track('Clicked Flip Coin');
     this.meshRefs['coin'].reset();
-    setTimeout(() => this.setState({
+    this.setState({
       result: null,
-    }), 0);
+    });
   }
 
   render() {

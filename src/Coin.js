@@ -75,7 +75,7 @@ class Coin extends Component {
 
   updateResult = _.throttle(() => {
     // Return if the coin is not close to the ground
-    if (this.groupRef.position.y > this.radius) return null;
+    if (this.body.position.y > this.radius) return null;
 
     const prevRotation = this.prevRotation || {};
     const currentRotation = this.groupRef.rotation;
