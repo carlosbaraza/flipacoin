@@ -1,3 +1,5 @@
+$tabletMin: 768px;
+
 body {
   margin: 0;
   padding: 0;
@@ -14,6 +16,13 @@ html, body, .app {
   box-sizing: border-box;
 }
 
+.container {
+  @media (min-width: $tabletMin) {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
 .main-nav {
   position: fixed;
   top: 0;
@@ -24,26 +33,49 @@ html, body, .app {
   color: white;
   text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 
-  button.fa-bars {
-    height: 100%;
-    font-size: 40px;
-    margin: 0 3px;
-    color: white;
-    float: left;
+  transition: left 0.3s;
 
-    // Reset button styles in desktop
-    background: none;
-    border: 0;
+  @media (min-width: $tabletMin) {
+    left: 300px;
+    width: calc(100% - 300px);
+  }
 
-    &:hover {
-      cursor: pointer;
+  button {
+    &.fa {
+      height: 100%;
+      font-size: 40px;
+      margin: 0 0 0 3px;
+      color: white;
+      float: left;
+
+      // Reset button styles in desktop
+      background: none;
+      border: 0;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      @media (min-width: $tabletMin) {
+        display: none;
+      }
+    }
+
+    &.fa-times-circle-o {
+      position: absolute;
+      left: -1.3em;
+      color: #222;
     }
   }
 
   .logo {
     display: inline-block;
     position: relative;
-    margin: 17px 0 0 0;
+    margin: 17px 0 0 10px;
+
+    @media (min-width: $tabletMin) {
+      margin-left: 20px;
+    }
 
     h1 {
       float: left;
@@ -61,30 +93,80 @@ html, body, .app {
         font-style: italic;
       }
     }
+  }
 
-    h2 {
-      float: left;
-      font-size: .8em;
-      display: inline-block;
-      margin: 0.8em 0 0 .4em;
-      font-weight: 300;
-      text-shadow: none;
-      opacity: 0.7;
-      font-style: italic;
+  h2 {
+    float: right;
+    font-size: .8em;
+    display: inline-block;
+    margin: 28px 20px 0 0;
+    font-weight: 300;
+    text-shadow: none;
+    opacity: 0.7;
+    font-style: italic;
 
-      a {
-        color: inherit;
-        text-decoration: none;
+    a {
+      color: inherit;
+      text-decoration: none;
 
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      span {
-        font-weight: 700;
-        margin: 0 1px;
+      &:hover {
+        text-decoration: underline;
       }
     }
+
+    span {
+      font-weight: 700;
+      margin: 0 1px;
+    }
+  }
+}
+
+.info {
+  width: 100%;
+  position: absolute;
+  right: 100%;
+  z-index: 10;
+  background: #EFEFEF;
+  color: #2A2A2A;
+  padding: 20px 20px 20px 20px;
+  min-height: 100%;
+
+  // Flex
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  transition: right 0.3s;
+
+  a {
+    text-decoration: none;
+    color: #199FFF;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media (min-width: $tabletMin) {
+    right: 0;
+    position: relative;
+    flex: 1 0 300px;
+  }
+}
+
+#root {
+  @media (min-width: $tabletMin) {
+    flex: 1 1 100%;
+    overflow: hidden;
+  }
+}
+
+.container.show-menu {
+  .main-nav {
+    left: 100%;
+  }
+
+  .info {
+    right: 0;
   }
 }

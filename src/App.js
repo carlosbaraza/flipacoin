@@ -13,7 +13,11 @@ class App extends Component {
     // construct the position vector here, because if we use 'new' within render,
     // React will think that things have changed when they have not.
 
+    const canvasSize = this.getCanvasSize();
+
     this.state = {
+      canvasWidth: canvasSize.width,
+      canvasHeight: canvasSize.height,
       cameraPosition: new THREE.Vector3(0, 10, 4),
       cameraLookAt: new THREE.Vector3(0, 10, 0),
       // coinRotation: new THREE.Euler(),
@@ -89,6 +93,29 @@ class App extends Component {
     this.meshRefs = {};
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeCanvas);
+  }
+
+  getCanvasSize() {
+    const container = document
+      .getElementById('root')
+      .getBoundingClientRect();
+
+    return {
+      width: container.width,
+      height: window.innerHeight
+    };
+  }
+
+  resizeCanvas = () => {
+    const canvasSize = this.getCanvasSize();
+    this.setState({
+      canvasWidth: canvasSize.width,
+      canvasHeight: canvasSize.height
+    });
+  }
+
   flipCoin() {
     if (window.analytics) window.analytics.track('Clicked Flip Coin');
     this.meshRefs['coin'].reset();
@@ -101,9 +128,6 @@ class App extends Component {
   }
 
   render() {
-    const width = window.innerWidth; // canvas width
-    const height = window.innerHeight; // canvas height
-
     const cameraLookAt = (this.state.meshStates['coin'] || {}).position ||
       new THREE.Vector3(0, 10, 0);
 
@@ -149,8 +173,8 @@ class App extends Component {
         </div>
         <React3
           mainCamera="camera" // this points to the perspectiveCamera which has the name set to "camera" below
-          width={width}
-          height={height}
+          width={this.state.canvasWidth}
+          height={this.state.canvasHeight}
           alpha
           antialias
           pixelRatio={window.devicePixelRatio}
@@ -167,7 +191,7 @@ class App extends Component {
             <perspectiveCamera
               name="camera"
               fov={75}
-              aspect={width / height}
+              aspect={this.state.canvasWidth / this.state.canvasHeight}
               near={0.1}
               far={100}
 
