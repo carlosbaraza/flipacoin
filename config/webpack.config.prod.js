@@ -120,13 +120,13 @@ module.exports = {
       // in the main CSS file.
       {
         test: /^((?!\.mod).)*\.(css|scss)$/,
-        loaders: [
+        loader: ExtractTextPlugin.extract(
           'style?sourceMap',
           'css',
           'postcss',
           'resolve-url',
           'sass?sourceMap'
-        ]
+        )
       },
       {
         test: /\.mod\.(css|scss)$/,

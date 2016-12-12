@@ -113,7 +113,7 @@ module.exports = {
         test: /^((?!\.mod).)*\.(css|scss)$/,
         loaders: [
           'style?sourceMap',
-          'css',
+          'css?importLoaders=1',
           'postcss',
           'resolve-url',
           'sass?sourceMap'
