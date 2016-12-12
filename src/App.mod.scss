@@ -57,6 +57,10 @@
     outline: none;
   }
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &:active {
     background: #666;
   }
