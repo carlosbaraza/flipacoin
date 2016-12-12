@@ -121,11 +121,11 @@ module.exports = {
       {
         test: /^((?!\.mod).)*\.(css|scss)$/,
         loader: ExtractTextPlugin.extract(
-          'style?sourceMap',
-          'css',
-          'postcss',
-          'resolve-url',
-          'sass?sourceMap'
+          'style',
+          'css?importLoaders=1&-autoprefixer!' +
+          'postcss!' +
+          'resolve-url!' +
+          'sass'
         )
       },
       {
