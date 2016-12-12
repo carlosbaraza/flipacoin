@@ -1,10 +1,10 @@
 {
-  "name": "Flip a coin",
+  "name": "Flip the coin",
   "short_name": "Flip coin",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#e8d958",
-  "description": "Heads or tails game. Flip one coin and get the result.",
+  "description": "Known as coin tossing, heads or tails or coin flipping; this popular game allows you to delegate the decision making.",
   "icons": [{
     "src": "favicon-32.png",
     "sizes": "32x32",
