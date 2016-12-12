@@ -35,6 +35,51 @@
     display: block;
     position: relative;
     text-align: center;
+
+    &.spinner {
+      top: -35px;
+      position:relative;
+
+      .spinnerInner,
+      .spinnerInner::before,
+      .spinnerInner::after {
+      	position: absolute;
+      	top: 50%;
+      	left: 50%;
+      	border: 1px solid rgba(20,20,20,.2);
+      	border-left-color: rgb(255,255,255);
+      	border-radius: 974px;
+      }
+
+      .spinnerInner {
+      	margin: -24px 0 0 -24px;
+      	height: 50px;
+      	width: 50px;
+      	animation: spinner-whirlpool 1700ms linear infinite;
+      }
+
+      .spinnerInner::before {
+      	content: "";
+      	margin: -22px 0 0 -22px;
+      	height: 42px;
+      	width: 42px;
+      	animation: spinner-whirlpool 1700ms linear infinite;
+      }
+
+      .spinnerInner::after {
+      	content: "";
+      	margin: -28px 0 0 -28px;
+      	height: 54px;
+      	width: 54px;
+      	animation: spinner-whirlpool 3200ms linear infinite;
+      }
+
+      @keyframes spinner-whirlpool {
+      	100% {
+      		transform: rotate(360deg);
+      	}
+      }
+    }
   }
 }
 

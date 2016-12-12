@@ -162,7 +162,9 @@ class App extends Component {
             </TransitionMotion>
             {this.state.result ?
               <li className={styles.result}>{this.state.result}</li> :
-              null}
+              <li className={`${styles.result} ${styles.spinner}`}>
+                <div className={styles.spinnerInner} />
+              </li>}
           </ol>
 
           <button className={styles.button} onClick={this.flipCoin.bind(this)}>
