@@ -1,5 +1,5 @@
 {
-  "name": "flipacoin",
+  "name": "flipthecoin",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -74,7 +74,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "deploy": "node scripts/deploy.js"
   },
-  "homepage": "https://flipacoin.appy.land/",
+  "homepage": "https://flipthecoin.appy.land/",
   "jest": {
     "moduleFileExtensions": [
       "jsx",
@@ -102,9 +102,9 @@
     ]
   },
   "cloud": {
-    "VIRTUAL_HOST": "flipacoin.appy.land",
-    "LETSENCRYPT_HOST": "flipacoin.appy.land",
-    "LETSENCRYPT_EMAIL": "carlos+flipacoin@baraza.io"
+    "VIRTUAL_HOST": "flipthecoin.appy.land",
+    "LETSENCRYPT_HOST": "flipthecoin.appy.land",
+    "LETSENCRYPT_EMAIL": "carlos+flipthecoin@baraza.io"
   },
   "eslintConfig": {
     "extends": "react-app"
