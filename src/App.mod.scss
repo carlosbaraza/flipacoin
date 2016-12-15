@@ -23,7 +23,6 @@
   li {
     position: absolute;
     bottom: 0;
-    right: 7px;
     width: 3em;
     text-align: right;
     text-transform: capitalize;
@@ -52,7 +51,7 @@
       }
 
       .spinnerInner {
-        margin: -25px 0 0 -20px;
+        margin: -25px 0 0 -25px;
       	height: 50px;
       	width: 50px;
       	animation: spinner-whirlpool 1700ms linear infinite;
